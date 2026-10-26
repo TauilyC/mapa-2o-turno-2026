@@ -1,0 +1,289 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Mapa do 2º Turno 2026</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: mapa ocupa a largura toda; controles e ficha do município acima e abaixo, em coluna única */
+:root{
+  --bg:#f3f4f2; --paper:#ffffff; --ink:#1b1e1f; --muted:#5d6563; --rule:#c9cecb;
+  --lula:#b8322a; --flavio:#1f5c9e; --mid:#efece6; --nodata:#dfe2e0; --stroke:#ffffff; --accent:#2f6b4f;
+  --f-display:"Archivo",system-ui,sans-serif; --f-mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#141716; --paper:#1c201f; --ink:#e6e9e7; --muted:#9aa29f; --rule:#39403d;
+  --lula:#e0675e; --flavio:#6aa2e0; --mid:#3a3d3b; --nodata:#262a29; --stroke:#141716; --accent:#6fc19a; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#141716; --paper:#1c201f; --ink:#e6e9e7; --muted:#9aa29f; --rule:#39403d;
+  --lula:#e0675e; --flavio:#6aa2e0; --mid:#3a3d3b; --nodata:#262a29; --stroke:#141716; --accent:#6fc19a; color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-display);line-height:1.5}
+.wrap{max-width:900px;margin:0 auto;padding-block:20px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:16px}
+.eyebrow{font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+h1{font-size:clamp(26px,6vw,38px);font-weight:800;line-height:1.05;margin:4px 0 6px;text-wrap:balance}
+h2{font-size:15px;font-weight:800;margin:0 0 8px}
+p{margin:0}
+.lede{color:var(--muted);max-width:64ch}
+.card{background:var(--paper);border:1px solid var(--rule);border-radius:6px;padding:16px}
+.bar{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:space-between}
+.seg{display:inline-flex;border:1px solid var(--rule);border-radius:5px;overflow:hidden}
+.seg button{font:600 14px var(--f-display);padding:8px 14px;border:0;background:transparent;color:var(--muted);cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+button:focus-visible,input:focus-visible,label.file:focus-within{outline:2px solid var(--accent);outline-offset:2px}
+.legend{display:flex;align-items:center;gap:8px;font-family:var(--f-mono);font-size:11px;color:var(--muted)}
+.ramp{width:160px;height:10px;border-radius:2px;background:linear-gradient(90deg,var(--flavio),var(--mid),var(--lula))}
+.mapbox{position:relative;background:var(--paper);border:1px solid var(--rule);border-radius:6px;overflow:hidden;touch-action:none}
+.mapbox svg{display:block;width:100%;height:auto}
+.mapbox path{stroke:var(--stroke);vector-effect:non-scaling-stroke}
+.mapbox path.sel{stroke:var(--ink);stroke-width:2}
+.zoom{position:absolute;right:10px;top:10px;display:flex;flex-direction:column;gap:6px}
+.zoom button{width:34px;height:34px;border-radius:4px;border:1px solid var(--rule);background:var(--paper);color:var(--ink);font:600 18px var(--f-mono);cursor:pointer}
+.empty{position:absolute;left:12px;bottom:12px;right:12px;max-width:420px;background:var(--paper);border:1px solid var(--rule);border-radius:6px;padding:12px 14px;font-size:13px;color:var(--muted)}
+.empty b{color:var(--ink)}
+.info{display:grid;grid-template-columns:1fr auto;gap:4px 16px;align-items:end}
+.info .nm{font-weight:800;font-size:18px}
+.info .uf{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.split{grid-column:1/-1;display:flex;height:10px;border-radius:2px;overflow:hidden;background:var(--nodata);margin-top:6px}
+.split i{display:block;height:100%}
+.nums{grid-column:1/-1;display:flex;justify-content:space-between;font-family:var(--f-mono);font-size:14px;font-variant-numeric:tabular-nums}
+.nums .l{color:var(--lula)} .nums .f{color:var(--flavio)}
+.meta{grid-column:1/-1;font-size:12px;color:var(--muted)}
+.up{display:flex;flex-direction:column;gap:10px}
+label.file{display:inline-flex;align-items:center;gap:10px;align-self:flex-start;font:600 14px var(--f-display);padding:10px 14px;border-radius:4px;background:var(--accent);color:var(--paper);cursor:pointer}
+label.file input{position:absolute;opacity:0;width:1px;height:1px}
+.status{font-size:13px;color:var(--muted)} .status.err{color:var(--lula)}
+.tbl{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{font-weight:600;color:var(--muted);text-align:left;font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:6px 4px;border-bottom:1px solid var(--rule)}
+td{padding:5px 4px;border-bottom:1px dashed var(--rule);font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+td.t{font-family:var(--f-display);color:var(--muted);font-size:12px}
+.sw{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+ul.how{margin:0;padding-left:18px;font-size:14px;max-width:68ch} ul.how li+li{margin-top:6px}
+code{font-family:var(--f-mono);font-size:12.5px;background:var(--bg);padding:1px 4px;border-radius:3px}
+.foot{font-size:12px;color:var(--muted)} .foot a{color:var(--accent)}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Eleições 2026 · Presidente · 2º turno · 100% apurado</div>
+    <h1>Mapa de calor do 2º turno</h1>
+    <p class="lede">Percentual de votos válidos de Lula (vermelho) e Flávio Bolsonaro (azul) por estado e por município. Quanto mais forte a cor, maior a vantagem.</p>
+  </header>
+
+  <div class="bar">
+    <div class="seg" role="group" aria-label="Nível do mapa">
+      <button type="button" id="vUF" aria-pressed="true">Estados</button>
+      <button type="button" id="vMun" aria-pressed="false">Municípios</button>
+    </div>
+    <div class="legend"><span>Flávio 80%</span><span class="ramp" aria-hidden="true"></span><span>Lula 80%</span></div>
+  </div>
+
+  <div class="mapbox" id="mapbox">
+    <svg id="map" viewBox="0 0 900 860" role="img" aria-label="Mapa do Brasil colorido pelo resultado do 2º turno"></svg>
+    <div class="zoom"><button type="button" id="zin" aria-label="Aproximar">+</button><button type="button" id="zout" aria-label="Afastar">−</button><button type="button" id="zreset" aria-label="Ver o Brasil inteiro">⤢</button></div>
+    <div class="empty" id="empty" hidden><b>Camada por município ainda sem dados.</b> Envie o arquivo de resultados do TSE logo abaixo para colorir as 5.570 cidades.</div>
+  </div>
+
+  <section class="card info" id="info" aria-live="polite">
+    <div><div class="nm" id="iNm">Toque em um estado ou município</div><div class="uf" id="iUf">Brasil · Lula 64.253.514 votos · Flávio 59.824.860 votos (100% das seções)</div></div>
+    <div></div>
+    <div class="split"><i id="iL" style="background:var(--lula);width:51.78%"></i><i id="iF" style="background:var(--flavio);width:48.22%"></i></div>
+    <div class="nums"><span class="l" id="iLp">Lula 51,78%</span><span class="f" id="iFp">Flávio 48,22%</span></div>
+    <div class="meta" id="iMeta">Lula reeleito, com 4.428.654 votos de vantagem (3,57 pontos). Fonte: TSE, via Poliwave.</div>
+  </section>
+
+  <section class="card up">
+    <h2>Carregar resultados por município</h2>
+    <label class="file" for="file">Escolher arquivo do TSE<input type="file" id="file" accept=".csv,.txt,.zip,text/csv"></label>
+    <div class="status" id="fStatus">Nenhum arquivo carregado. O arquivo fica só neste navegador.</div>
+    <ul class="how">
+      <li><b>Dados Abertos do TSE</b> (dadosabertos.tse.jus.br): conjunto "Resultados 2026", arquivo <code>votacao_candidato_munzona_2026_BRASIL.csv</code> ou o de cada estado. Descompacte o .zip e envie o .csv. O mapa filtra o 2º turno e o cargo de presidente sozinho.</li>
+      <li><b>Planilha própria</b> em CSV com o código do município (IBGE ou TSE) ou nome + UF, e colunas com votos ou % de Lula e de Flávio.</li>
+      <li>Com o arquivo carregado, a camada de estados passa a ser calculada a partir dele.</li>
+    </ul>
+  </section>
+
+  <section class="card">
+    <h2>Estados</h2>
+    <div class="tbl"><table><thead><tr><th>UF</th><th>Lula</th><th>Flávio</th><th>Seções</th><th>Fonte</th></tr></thead><tbody id="rows"></tbody></table></div>
+    <p class="status" style="margin-top:8px" id="ufNote">Apuração concluída: 100% das seções nos 27 estados, segundo a imprensa e o TRE-SP. O resultado oficial é o proclamado pelo TSE.</p>
+  </section>
+
+  <p class="foot">Malha municipal: IBGE via <a href="https://github.com/tbrugz/geodata-br" target="_blank" rel="noopener">geodata-br</a> (5.564 municípios; os 6 mais recentes não têm contorno). Códigos TSE↔IBGE: <a href="https://github.com/betafcc/Municipios-Brasileiros-TSE" target="_blank" rel="noopener">Municipios-Brasileiros-TSE</a>. Resultado oficial: <a href="https://resultados.tse.jus.br" target="_blank" rel="noopener">TSE</a>.</p>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+<script>
+(function(){
+const UF={11:"RO",12:"AC",13:"AM",14:"RR",15:"PA",16:"AP",17:"TO",21:"MA",22:"PI",23:"CE",24:"RN",25:"PB",26:"PE",27:"AL",28:"SE",29:"BA",31:"MG",32:"ES",33:"RJ",35:"SP",41:"PR",42:"SC",43:"RS",50:"MS",51:"MT",52:"GO",53:"DF"};
+const UFNAME={RO:"Rondônia",AC:"Acre",AM:"Amazonas",RR:"Roraima",PA:"Pará",AP:"Amapá",TO:"Tocantins",MA:"Maranhão",PI:"Piauí",CE:"Ceará",RN:"Rio Grande do Norte",PB:"Paraíba",PE:"Pernambuco",AL:"Alagoas",SE:"Sergipe",BA:"Bahia",MG:"Minas Gerais",ES:"Espírito Santo",RJ:"Rio de Janeiro",SP:"São Paulo",PR:"Paraná",SC:"Santa Catarina",RS:"Rio Grande do Sul",MS:"Mato Grosso do Sul",MT:"Mato Grosso",GO:"Goiás",DF:"Distrito Federal"};
+const SIG2COD=Object.fromEntries(Object.entries(UF).map(([k,v])=>[v,k]));
+const $=id=>document.getElementById(id);
+const fmt=(x,d=2)=>x.toLocaleString("pt-BR",{minimumFractionDigits:d,maximumFractionDigits:d});
+const norm=s=>String(s||"").normalize("NFD").replace(/[̀-ͯ]/g,"").toUpperCase().replace(/[^A-Z0-9 ]/g," ").replace(/\s+/g," ").trim();
+const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+
+let ufData={};      // sigla -> {lula, urnas, src}
+let munData=null;   // ibge -> {lula, l, f}
+let ufFromFile=null;
+let view="uf",ufGeo,munGeo,tse,nameIdx={},svg,g,zoom,path,selected=null;
+try{const s=localStorage.getItem("mapa2t-mun");if(s){const o=JSON.parse(s);munData=o.data;ufFromFile=o.uf}}catch(e){}
+
+function color(lula){
+  if(lula==null||!isFinite(lula))return css("--nodata");
+  const t=Math.max(0,Math.min(1,(lula-20)/60));
+  return t<.5?d3.interpolateRgb(css("--flavio"),css("--mid"))(t*2):d3.interpolateRgb(css("--mid"),css("--lula"))((t-.5)*2);
+}
+function ufRec(sig){return ufFromFile&&ufFromFile[sig]?ufFromFile[sig]:ufData[sig]}
+
+function showInfo(name,sub,rec,meta){
+  $("iNm").textContent=name;$("iUf").textContent=sub;
+  if(rec&&isFinite(rec.lula)){
+    $("iL").style.width=rec.lula+"%";$("iF").style.width=(100-rec.lula)+"%";
+    $("iLp").textContent="Lula "+fmt(rec.lula)+"%";$("iFp").textContent="Flávio "+fmt(100-rec.lula)+"%";
+  }else{$("iL").style.width="0";$("iF").style.width="0";$("iLp").textContent="Lula –";$("iFp").textContent="Flávio –"}
+  $("iMeta").textContent=meta||"";
+}
+const votes=r=>r&&r.l!=null?" · "+(r.l+r.f).toLocaleString("pt-BR")+" votos válidos":"";
+
+function paint(){
+  const showUF=view==="uf";
+  g.select(".mun").attr("display",showUF?"none":null);
+  g.select(".ufs").selectAll("path").attr("fill",d=>showUF?color(ufRec(UF[d.properties.uf])?.lula):"none")
+    .attr("stroke-width",showUF?1:1.4).style("stroke",showUF?null:css("--ink")).style("stroke-opacity",showUF?null:.55);
+  if(!showUF)g.select(".mun").selectAll("path").attr("fill",d=>color(munData?.[d.properties.id]?.lula));
+  $("empty").hidden=showUF||!!munData;
+  $("vUF").setAttribute("aria-pressed",String(showUF));$("vMun").setAttribute("aria-pressed",String(!showUF));
+  g.select(".ufs").style("pointer-events",showUF?null:"none");
+}
+
+function renderTable(){
+  const rows=Object.values(UF).sort((a,b)=>UFNAME[a].localeCompare(UFNAME[b],"pt"));
+  $("rows").innerHTML=rows.map(s=>{const r=ufRec(s);const has=r&&isFinite(r.lula);
+    return `<tr><td><span class="sw" style="background:${color(has?r.lula:null)}"></span>${s}</td><td>${has?fmt(r.lula,1)+"%":"–"}</td><td>${has?fmt(100-r.lula,1)+"%":"–"}</td><td>${r&&r.urnas?fmt(r.urnas,1)+"%":"–"}</td><td class="t">${has?(r.src||""):"sem dado ainda"}</td></tr>`}).join("");
+  $("ufNote").textContent=ufFromFile?"Calculado a partir do arquivo de municípios que você carregou.":"Apuração concluída: 100% das seções nos 27 estados, segundo a imprensa e o TRE-SP. O resultado oficial é o proclamado pelo TSE.";
+}
+
+function select(el){if(selected)selected.classList.remove("sel");selected=el;if(el){el.classList.add("sel");el.parentNode.appendChild(el)}}
+
+async function init(){
+  const [u,m,t]=await Promise.all([fetch("uf.topo.json").then(r=>r.json()),fetch("mun.topo.json").then(r=>r.json()),fetch("tse.json").then(r=>r.json())]);
+  ufGeo=topojson.feature(u,u.objects[Object.keys(u.objects)[0]]);
+  munGeo=topojson.feature(m,m.objects[Object.keys(m.objects)[0]]);
+  tse=t;
+  for(const f of munGeo.features){nameIdx[norm(f.properties.name)+"|"+f.properties.uf]=f.properties.id}
+  const W=900,H=860;
+  const proj=d3.geoMercator().fitExtent([[12,12],[W-12,H-12]],ufGeo);path=d3.geoPath(proj);
+  svg=d3.select("#map");g=svg.append("g");
+  g.append("g").attr("class","mun").selectAll("path").data(munGeo.features).join("path").attr("d",path).attr("stroke-width",.25)
+    .on("click",function(e,d){select(this);const r=munData?.[d.properties.id];const sig=UF[d.properties.uf];
+      showInfo(d.properties.name,sig+" · "+UFNAME[sig],r,r?"Fonte: arquivo carregado"+votes(r):"Sem dado para este município no arquivo carregado.")});
+  g.append("g").attr("class","ufs").selectAll("path").data(ufGeo.features).join("path").attr("d",path)
+    .on("click",function(e,d){select(this);const sig=UF[d.properties.uf],r=ufRec(sig);
+      showInfo(UFNAME[sig],sig+(r&&r.urnas?" · "+fmt(r.urnas,1)+"% das seções":""),r,r&&isFinite(r.lula)?"Fonte: "+(r.src||"")+votes(r):"Ainda sem resultado publicado para este estado.")});
+  zoom=d3.zoom().scaleExtent([1,40]).on("zoom",e=>g.attr("transform",e.transform));
+  svg.call(zoom);
+  $("zin").onclick=()=>svg.transition().duration(250).call(zoom.scaleBy,1.8);
+  $("zout").onclick=()=>svg.transition().duration(250).call(zoom.scaleBy,1/1.8);
+  $("zreset").onclick=()=>svg.transition().duration(300).call(zoom.transform,d3.zoomIdentity);
+  paint();renderTable();
+  if(munData)$("fStatus").textContent=Object.keys(munData).length.toLocaleString("pt-BR")+" municípios carregados de um arquivo anterior.";
+}
+
+$("vUF").onclick=()=>{view="uf";paint()};
+$("vMun").onclick=()=>{view="mun";paint()};
+matchMedia("(prefers-color-scheme: dark)").addEventListener?.("change",()=>{if(g){paint();renderTable()}});
+
+/* ---------- leitura do arquivo ---------- */
+function splitLine(line,sep){
+  const out=[];let cur="",q=false;
+  for(let i=0;i<line.length;i++){const c=line[i];
+    if(q){if(c==='"'){if(line[i+1]==='"'){cur+='"';i++}else q=false}else cur+=c}
+    else if(c==='"')q=true;else if(c===sep){out.push(cur);cur=""}else cur+=c}
+  out.push(cur);return out;
+}
+const toNum=v=>{if(v==null)return NaN;let s=String(v).trim().replace("%","");if(/,\d{1,2}$/.test(s)||(/\./.test(s)&&/,/.test(s)))s=s.replace(/\./g,"").replace(",",".");return parseFloat(s)};
+
+async function readFile(file){
+  const st=$("fStatus");st.classList.remove("err");
+  if(/\.zip$/i.test(file.name)){st.textContent="Descompacte o .zip e envie o arquivo .csv que está dentro dele.";st.classList.add("err");return}
+  st.textContent="Lendo "+file.name+"…";
+  const head=new Uint8Array(await file.slice(0,65536).arrayBuffer());
+  let enc="utf-8";try{new TextDecoder("utf-8",{fatal:true}).decode(head.subarray(0,Math.max(0,head.length-4)))}catch(e){enc="windows-1252"}
+  const reader=file.stream().pipeThrough(new TextDecoderStream(enc)).getReader();
+  let buf="",hdr=null,sep=";",mode=null,ix={},acc={},lines=0,used=0;
+  const agg=(ibge,l,f)=>{if(!ibge)return;const a=acc[ibge]||(acc[ibge]={l:0,f:0,pct:false});a.l+=l;a.f+=f};
+  const findIbge=(cells)=>{
+    if(ix.ibge!=null){const c=String(cells[ix.ibge]).replace(/\D/g,"");if(c.length===7)return c}
+    if(ix.tse!=null){const c=String(cells[ix.tse]).replace(/\D/g,"").padStart(5,"0");if(tse[c])return tse[c]}
+    if(ix.code!=null){const raw=String(cells[ix.code]).replace(/\D/g,"");if(raw.length===7)return raw;const c=raw.padStart(5,"0");if(tse[c])return tse[c]}
+    if(ix.name!=null&&ix.uf!=null){const k=norm(cells[ix.name])+"|"+SIG2COD[norm(cells[ix.uf])];return nameIdx[k]}
+    return null;
+  };
+  const onHeader=line=>{
+    sep=[";",",","\t"].map(s=>[s,line.split(s).length]).sort((a,b)=>b[1]-a[1])[0][0];
+    hdr=splitLine(line,sep).map(h=>norm(h).replace(/ /g,"_"));
+    const f=(...re)=>{for(const r of re){const i=hdr.findIndex(h=>r.test(h));if(i>=0)return i}return null};
+    if(hdr.includes("NR_CANDIDATO")&&(hdr.includes("CD_MUNICIPIO"))){
+      mode="tse";ix={turno:f(/^NR_TURNO$/),cargo:f(/^CD_CARGO$/),dscargo:f(/^DS_CARGO$/),tse:f(/^CD_MUNICIPIO$/),cand:f(/^NR_CANDIDATO$/),
+        votos:f(/^QT_VOTOS_NOMINAIS_VALIDOS$/,/^QT_VOTOS_NOMINAIS$/,/^QT_VOTOS$/),uf:f(/^SG_UF$/)};
+      if(ix.votos==null)throw new Error("Não achei a coluna de votos (QT_VOTOS…).");
+    }else{
+      mode="simple";ix={ibge:f(/IBGE/),tse:f(/TSE/),code:f(/^(CD_|COD|CODIGO)/),name:f(/^(NM_)?MUNICIPIO$/,/^NOME/,/^CIDADE$/,/MUNICIPIO/),uf:f(/^(SG_)?UF$/,/ESTADO/),
+        l:f(/LULA/,/^13$/,/^PT$/),f:f(/FLAVIO/,/BOLSONARO/,/^22$/,/^PL$/)};
+      if(ix.l==null||ix.f==null)throw new Error("Não achei colunas de Lula e de Flávio. Use cabeçalhos com esses nomes.");
+    }
+  };
+  const onRow=line=>{
+    if(!line.trim())return;const c=splitLine(line,sep);lines++;
+    if(mode==="tse"){
+      if(ix.turno!=null&&String(c[ix.turno]).trim()!=="2")return;
+      if(ix.cargo!=null){if(String(c[ix.cargo]).trim()!=="1")return}else if(ix.dscargo!=null&&!/PRESIDENTE/i.test(c[ix.dscargo])||/VICE/i.test(c[ix.dscargo]||""))return;
+      if(ix.uf!=null&&/^(ZZ|BR|VT)$/.test(String(c[ix.uf]).trim()))return;
+      const cand=String(c[ix.cand]).trim();if(cand!=="13"&&cand!=="22")return;
+      const v=toNum(c[ix.votos]);if(!isFinite(v))return;
+      const ibge=findIbge(c);if(!ibge)return;used++;
+      agg(ibge,cand==="13"?v:0,cand==="22"?v:0);
+    }else{
+      const l=toNum(c[ix.l]),f=toNum(c[ix.f]);if(!isFinite(l)||!isFinite(f))return;
+      const ibge=findIbge(c);if(!ibge)return;used++;
+      const a=acc[ibge]||(acc[ibge]={l:0,f:0});a.l+=l;a.f+=f;
+    }
+  };
+  for(;;){
+    const {value,done}=await reader.read();if(value)buf+=value;
+    let nl;while((nl=buf.indexOf("\n"))>=0){const line=buf.slice(0,nl).replace(/\r$/,"");buf=buf.slice(nl+1);if(!hdr)onHeader(line);else onRow(line)}
+    if(done){if(buf){if(!hdr)onHeader(buf);else onRow(buf)}break}
+    if(lines%200000<5000)st.textContent="Lendo "+file.name+"… "+lines.toLocaleString("pt-BR")+" linhas";
+  }
+  const data={},ufAcc={};
+  for(const [ibge,a] of Object.entries(acc)){
+    const tot=a.l+a.f;if(tot<=0)continue;
+    const isPct=mode==="simple"&&tot>99&&tot<101&&a.l<=100;
+    data[ibge]=isPct?{lula:a.l}:{lula:a.l/tot*100,l:Math.round(a.l),f:Math.round(a.f)};
+    if(!isPct){const s=UF[ibge.slice(0,2)];if(s){const u=ufAcc[s]||(ufAcc[s]={l:0,f:0});u.l+=a.l;u.f+=a.f}}
+  }
+  const n=Object.keys(data).length;
+  if(!n){st.textContent="Nenhum município do 2º turno para presidente encontrado nesse arquivo.";st.classList.add("err");return}
+  munData=data;
+  ufFromFile=Object.keys(ufAcc).length?Object.fromEntries(Object.entries(ufAcc).map(([s,u])=>[s,{lula:u.l/(u.l+u.f)*100,l:Math.round(u.l),f:Math.round(u.f),urnas:null,src:"arquivo carregado"}])):null;
+  try{localStorage.setItem("mapa2t-mun",JSON.stringify({data:munData,uf:ufFromFile}))}catch(e){}
+  st.textContent=n.toLocaleString("pt-BR")+" municípios carregados de "+file.name+".";
+  view="mun";paint();renderTable();
+}
+$("file").addEventListener("change",e=>{const f=e.target.files[0];if(f)readFile(f).catch(err=>{const st=$("fStatus");st.textContent="Não consegui ler o arquivo: "+err.message;st.classList.add("err")});e.target.value=""});
+
+/* ---------- parciais por estado (feed) ---------- */
+(async()=>{
+  let db=null;try{db=window.claude&&await window.claude.use("db")}catch(e){}
+  if(!db)return;
+  db.collection("estados").onSnapshot(snap=>{
+    ufData={};for(const d of snap.docs){const x=d.data();if(x&&x.uf&&isFinite(+x.lula))ufData[x.uf]={lula:+x.lula,urnas:x.urnas!=null?+x.urnas:null,src:x.src||""}}
+    if(g){paint();renderTable()}
+  },()=>{});
+})();
+
+init().catch(e=>{$("iNm").textContent="Não consegui carregar o mapa.";$("iUf").textContent="Recarregue a página."});
+})();
+</script>
+
+</body></html>
